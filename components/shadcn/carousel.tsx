@@ -37,6 +37,7 @@ export default function CarouselDemo({ flashcards }: CarouselDemoProps) {
                   </h1>
                 </CardContent>
               </Card>
+              <h3>{index + 1} of {flashcards.length}</h3>
             </div>
           </CarouselItem>
         ))}
