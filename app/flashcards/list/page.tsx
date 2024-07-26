@@ -16,7 +16,7 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 import { ArrowUpDown, ChevronDown, MoreHorizontal } from 'lucide-react';
-
+import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import {
@@ -63,6 +63,7 @@ export const columns: ColumnDef<Flashcard>[] = [
     cell: ({ row }) => <div className="text-right font-medium">{row.getValue('answer')}</div>,
   },
 ];
+
 
 export default function DataTableDemo() {
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -175,6 +176,9 @@ export default function DataTableDemo() {
           </TableBody>
         </Table>
       </div>
+      <Link href="practice-set">
+            <Button>FLASHCARD</Button>
+      </Link>
     </div>
   );
 }
