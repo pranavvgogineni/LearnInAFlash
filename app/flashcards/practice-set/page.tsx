@@ -1,6 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
-import FlashCards from '@/components/flashcards/flashcard';
+import { getAllFlashcards } from '@/actions/api/flashcards/route';
 import CarouselDemo from '@/components/shadcn/carousel';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
@@ -11,7 +11,7 @@ export default function FlashCardPage() {
 
   useEffect(() => {
     const fetchFlashcards = async () => {
-      const result = await FlashCards();
+      const result = await getAllFlashcards();
       setFlashcards(result || []);
       setLoading(false);
     };

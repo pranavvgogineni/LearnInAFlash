@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import { useState, useEffect } from 'react';
-import  FlashCards  from '@/components/flashcards/flashcard'; // Ensure this import path is correct
+import { getAllFlashcards } from '@/actions/api/flashcards/route'; // Ensure this import path is correct
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -75,7 +75,7 @@ export default function DataTableDemo() {
   useEffect(() => {
     const fetchFlashcards = async () => {
       try {
-        const result = await FlashCards();
+        const result = await getAllFlashcards();
         setFlashcards(result || []);
       } catch (error) {
         console.error('Error fetching flashcards:', error);
