@@ -13,17 +13,19 @@ import { Label } from "@/components/ui/label";
 import React from "react";
 import { createFlashcard } from '@/actions/api/flashcards/route'; // Ensure the correct import path
 
-export function DialogDemo() {
+export function DialogDemo({ onFlashcardAdded }: { onFlashcardAdded: () => void }) {
   const [open, setOpen] = React.useState(false);
   const [question, setQuestion] = React.useState("");
+  const [set_id, setSetId] = React.useState(1);
   const [answer, setAnswer] = React.useState("");
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     
-    await createFlashcard(question, answer);
+    await createFlashcard(question, answer, set_id); // Ensure the correct arguments are passed
 
     setOpen(false);
+    onFlashcardAdded(); // Trigger the refetch
   };
 
   return (
@@ -59,6 +61,17 @@ export function DialogDemo() {
                 id="answer"
                 value={answer}
                 onChange={(e) => setAnswer(e.target.value)}
+                className="col-span-3"
+              />
+            </div>
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="set_id" className="text-right">
+                Set ID
+              </Label>
+              <Input
+                id="set_id"
+                value={set_id}
+                onChange={(e) => setSetId(Number(e.target.value))}
                 className="col-span-3"
               />
             </div>

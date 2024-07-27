@@ -8,9 +8,15 @@ export const getAllFlashcards = async () => {
     return flashcards
 }
 
-export const createFlashcard = async (question: string, answer: string) => {
-    const { error } = await supabase.from('flashcards').insert({ question: question, answer: answer }).select();;
+export const createFlashcard = async (question: string, answer: string, set_id: number) => {
+    const { data, error } = await supabase
+        .from('flashcards')
+        .insert({ question: question, answer: answer, set_id: set_id })
+        .select();
+
     if (error) {
         console.log(error);
     }
-}
+
+    return data;
+};

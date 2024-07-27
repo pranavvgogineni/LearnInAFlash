@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import { useState, useEffect } from 'react';
-import { getAllFlashcards } from '@/actions/api/flashcards/route'; // Ensure this import path is correct
+import { getAllFlashcards } from '@/actions/api/flashcards/route';
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -15,7 +15,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import { ArrowUpDown, ChevronDown, MoreHorizontal } from 'lucide-react';
+import { ArrowUpDown, ChevronDown } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -65,13 +65,13 @@ export const columns: ColumnDef<Flashcard>[] = [
   },
 ];
 
-
 export default function DataTableDemo() {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [flashcards, setFlashcards] = useState<Flashcard[]>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
+  const [refetchTrigger, setRefetchTrigger] = useState(false); // State to trigger refetch
 
   useEffect(() => {
     const fetchFlashcards = async () => {
@@ -84,7 +84,11 @@ export default function DataTableDemo() {
     };
 
     fetchFlashcards();
-  }, []);
+  }, [refetchTrigger]); // Refetch when refetchTrigger changes
+
+  const handleFlashcardAdded = () => {
+    setRefetchTrigger(!refetchTrigger); // Toggle the refetch trigger
+  };
 
   const table = useReactTable({
     data: flashcards,
@@ -178,9 +182,9 @@ export default function DataTableDemo() {
         </Table>
       </div>
       <Link href="practice-set">
-            <Button>FLASHCARD</Button>
+        <Button>FLASHCARD</Button>
       </Link>
-      <DialogDemo />
+      <DialogDemo onFlashcardAdded={handleFlashcardAdded} />
     </div>
   );
 }
