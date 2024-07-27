@@ -37,11 +37,12 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import { DialogDemo } from '@/components/shadcn/dialog';
 
 export type Flashcard = {
   question: string;
   answer: string;
-};
+}; 
 
 export const columns: ColumnDef<Flashcard>[] = [
   {
@@ -179,6 +180,7 @@ export default function DataTableDemo() {
       <Link href="practice-set">
             <Button>FLASHCARD</Button>
       </Link>
+      <DialogDemo />
     </div>
   );
 }
