@@ -1,6 +1,8 @@
 import { cn } from "@/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
+import Link from 'next/link';
+import { Button } from "../ui/button";
 
 export const HoverEffect = ({
   set_name,
@@ -8,6 +10,7 @@ export const HoverEffect = ({
 }: {
   set_name: {
     set_name: string;
+    id: number; 
   }[];
   className?: string;
 }) => {
@@ -46,6 +49,9 @@ export const HoverEffect = ({
           </AnimatePresence>
           <Card>
             <CardTitle>{item.set_name}</CardTitle>
+            <Link href={`/flashcards/list/${item.id}`}>
+              <CardButton>View Set</CardButton>
+            </Link>
           </Card>
         </div>
       ))}
@@ -88,21 +94,24 @@ export const CardTitle = ({
   );
 };
 
-export const CardDescription = ({
+export const CardButton = ({
   className,
   children,
+  onClick,
 }: {
   className?: string;
   children: React.ReactNode;
+  onClick?: () => void;
 }) => {
   return (
-    <p
+    <button
       className={cn(
-        "mt-8 text-zinc-400 tracking-wide leading-relaxed text-sm",
+        "mt-4 bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded",
         className
       )}
+      onClick={onClick}
     >
       {children}
-    </p>
+    </button>
   );
 };

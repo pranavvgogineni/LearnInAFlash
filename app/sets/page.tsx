@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 
 export default function SetPage() {
-  const [sets, setSets] = useState<{set_name:string}[]>([]);
+  const [sets, setSets] = useState<{ set_name: string, id: number }[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -26,9 +26,9 @@ export default function SetPage() {
   return (
     <div>
       <h1>Sets</h1>
-        <CardHoverEffectDemo set_name={sets} />
+      <CardHoverEffectDemo set_name={sets} />
       <Link href="list">
-            <Button>BACK TO SET</Button>
+        <Button>BACK TO SET</Button>
       </Link>
     </div>
   );

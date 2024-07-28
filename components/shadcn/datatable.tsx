@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import { useState, useEffect } from 'react';
-import FlashCards from '@/components/flashcards/flashcard'; // Ensure this import path is correct
+import { getAllFlashcards } from '@/actions/api/flashcards/route';
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -15,10 +15,9 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import { ArrowUpDown, ChevronDown, MoreHorizontal } from 'lucide-react';
-
+import { ArrowUpDown, ChevronDown } from 'lucide-react';
+import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -37,6 +36,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import { DialogDemo } from '@/components/shadcn/dialog';
 
 export type Flashcard = {
   question: string;
@@ -64,25 +64,32 @@ export const columns: ColumnDef<Flashcard>[] = [
   },
 ];
 
-export default function DataTableDemo() {
+export default function DataTableDemo({ set_id }: { set_id: number }) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [flashcards, setFlashcards] = useState<Flashcard[]>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
+  const [refetchTrigger, setRefetchTrigger] = useState(false); // State to trigger refetch
 
   useEffect(() => {
     const fetchFlashcards = async () => {
       try {
-        const result = await FlashCards();
+        const result = await getAllFlashcards(Number(set_id));
         setFlashcards(result || []);
       } catch (error) {
         console.error('Error fetching flashcards:', error);
       }
     };
 
-    fetchFlashcards();
-  }, []);
+    if (set_id) {
+      fetchFlashcards();
+    }
+  }, [set_id, refetchTrigger]); // Refetch when refetchTrigger or set_id changes
+
+  const handleFlashcardAdded = () => {
+    setRefetchTrigger(!refetchTrigger); // Toggle the refetch trigger
+  };
 
   const table = useReactTable({
     data: flashcards,
@@ -175,29 +182,10 @@ export default function DataTableDemo() {
           </TableBody>
         </Table>
       </div>
-      <div className="flex items-center justify-end space-x-2 py-4">
-        <div className="flex-1 text-sm text-muted-foreground">
-          {table.getFilteredSelectedRowModel().rows.length} of {table.getFilteredRowModel().rows.length} row(s) selected.
-        </div>
-        <div className="space-x-2">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
-          >
-            Previous
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}
-          >
-            Next
-          </Button>
-        </div>
-      </div>
+      <Link href="practice-set">
+        <Button>FLASHCARD</Button>
+      </Link>
+      <DialogDemo onFlashcardAdded={handleFlashcardAdded} />
     </div>
   );
 }
