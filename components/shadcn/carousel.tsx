@@ -1,3 +1,5 @@
+'use client';
+
 import * as React from 'react';
 import { useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
@@ -10,7 +12,7 @@ import {
 } from '@/components/ui/carousel';
 
 interface CarouselDemoProps {
-  flashcards: { question: string; answer: string }[];
+  flashcards: { question: string; answer: string }[]; // Ensure this matches the expected structure
 }
 
 export default function CarouselDemo({ flashcards }: CarouselDemoProps) {

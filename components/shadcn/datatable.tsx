@@ -75,7 +75,7 @@ export default function DataTableDemo({ set_id }: { set_id: number }) {
   useEffect(() => {
     const fetchFlashcards = async () => {
       try {
-        const result = await getAllFlashcards(Number(set_id));
+        const result = await getAllFlashcards(set_id);
         setFlashcards(result || []);
       } catch (error) {
         console.error('Error fetching flashcards:', error);
@@ -182,10 +182,10 @@ export default function DataTableDemo({ set_id }: { set_id: number }) {
           </TableBody>
         </Table>
       </div>
-      <Link href="practice-set">
+      <Link href={`${set_id}/practice-set/${set_id}`}>
         <Button>FLASHCARD</Button>
       </Link>
-      <DialogDemo onFlashcardAdded={handleFlashcardAdded} />
+      <DialogDemo set_id={set_id} onFlashcardAdded={handleFlashcardAdded} />
     </div>
   );
 }

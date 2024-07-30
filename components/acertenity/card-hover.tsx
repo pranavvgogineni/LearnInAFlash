@@ -10,7 +10,7 @@ export const HoverEffect = ({
 }: {
   set_name: {
     set_name: string;
-    id: number; 
+    id: number; // Ensure set_id is included as a number
   }[];
   className?: string;
 }) => {
@@ -49,7 +49,10 @@ export const HoverEffect = ({
           </AnimatePresence>
           <Card>
             <CardTitle>{item.set_name}</CardTitle>
-            <Link href={`/flashcards/list/${item.id}`}>
+            <Link href={{
+              pathname: '/flashcards/list',
+              query: { set_id: item.id }
+            }}>
               <CardButton>View Set</CardButton>
             </Link>
           </Card>
