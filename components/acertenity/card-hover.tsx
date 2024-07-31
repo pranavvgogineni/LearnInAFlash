@@ -49,10 +49,7 @@ export const HoverEffect = ({
           </AnimatePresence>
           <Card>
             <CardTitle>{item.set_name}</CardTitle>
-            <Link href={{
-              pathname: '/flashcards/list',
-              query: { set_id: item.id }
-            }}>
+            <Link href={`/flashcards/list/${item.id}`}>
               <CardButton>View Set</CardButton>
             </Link>
           </Card>
