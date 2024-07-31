@@ -1,7 +1,7 @@
 'use client';
 import {Button} from "@/components/ui/button";
 import { useState, useEffect } from 'react';
-import { getAllFlashcards } from '@/actions/api/flashcards/route';
+import { getFlashcard } from '@/actions/api/flashcards/route';
 
 
 let isAnswer = "Lebron James";
@@ -10,19 +10,20 @@ const handleClick = () => {
 }
 interface FlashcardProps {
     set_id: number;
+    id: number;
   }
 
-export default function Learn(set_id: FlashcardProps) {
-    const [flashcards, setFlashcards] = useState<{ question: string; answer: string }[]>([]);
+export default function Learn({set_id, id}: FlashcardProps) {
+    const [flashcards, setFlashcards] = useState<{ question: string; answer: string }[] | null>(null);
     const [loading, setLoading] = useState(true);
     useEffect(() => {
-        const fetchFlashcards = async () => {
-          const result = await getAllFlashcards(Number(set_id));
-          setFlashcards(result || []);
+        const fetchFlashcard = async () => {
+          const result = await getFlashcard(Number(set_id), Number(id));
+          setFlashcards(result as { question: string; answer: string }[] | null);
           setLoading(false);
         };
     
-        fetchFlashcards();
+        fetchFlashcard();
       }, [set_id]);
     return (
         <div>

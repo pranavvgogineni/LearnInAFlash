@@ -11,6 +11,16 @@ export const getAllFlashcards = async (set_id: number) => {
     return flashcards;
   };
 
+export const getFlashcard = async (id: number, set_id: number) => {
+    let { data: flashcard } = await supabase
+      .from('flashcards')
+      .select('question, answer')
+      .eq('set_id', set_id,)
+      .eq('id', id)
+      .single();
+    return flashcard;
+  }
+
 export const createFlashcard = async (question: string, answer: string, set_id: number) => {
     const { data, error } = await supabase
         .from('flashcards')
