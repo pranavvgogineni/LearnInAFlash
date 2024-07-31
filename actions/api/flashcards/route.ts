@@ -4,12 +4,15 @@ import {createClient} from "@/utils/supabase/server";
 const supabase = createClient();
 
 export const getAllFlashcards = async (set_id: number) => {
-    let { data: flashcards } = await supabase
-      .from('flashcards')
-      .select('question, answer, set_id')
-      .eq('set_id', set_id);
-    return flashcards;
-  };
+  const { data, error } = await supabase
+    .from('flashcards')
+    .select('id, set_id, question, answer')
+    .eq('set_id', set_id);
+  if (error) {
+    console.error("Error fetching flashcards:", error);
+  }
+  return data;
+};
 
 export const getFlashcard = async (id: number, set_id: number) => {
     let { data: flashcard } = await supabase
