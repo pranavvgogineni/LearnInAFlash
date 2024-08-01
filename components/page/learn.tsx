@@ -51,12 +51,26 @@ export default function Learn({ set_id }: FlashcardProps) {
   };
 
   const handleOptionClick = (answer: string) => {
-    setMessage(answer === currentQuestion?.answer ? 'Correct!' : 'Incorrect, try again!');
+    const isCorrect = answer === currentQuestion?.answer;
+    setMessage(isCorrect ? 'Correct!' : 'Incorrect, try again!');
+    if (isCorrect) {
+      setTimeout(() => {
+        setMessage('');
+        generateQuestion(flashcards);
+      }, 1000);
+    }
   };
 
   const handleInputSubmit = () => {
-    setMessage(userInput === currentQuestion?.answer ? 'Correct!' : 'Incorrect, try again!');
-    setUserInput('');
+    const isCorrect = userInput === currentQuestion?.answer;
+    setMessage(isCorrect ? 'Correct!' : 'Incorrect, try again!');
+    if (isCorrect) {
+      setTimeout(() => {
+        setMessage('');
+        generateQuestion(flashcards);
+        setUserInput('');
+      }, 1000);
+    }
   };
 
   if (loading) {
