@@ -18,8 +18,9 @@ export default function Learn({ set_id }: FlashcardProps) {
   const [flashcards, setFlashcards] = useState<Flashcard[]>([]);
   const [currentQuestion, setCurrentQuestion] = useState<Flashcard | null>(null);
   const [options, setOptions] = useState<string[]>([]);
-  const [feedback, setFeedback] = useState<string | null>(null); // State for feedback message
   const [loading, setLoading] = useState(true);
+  const [userInput, setUserInput] = useState<string>('');
+  const [message, setMessage] = useState<string>('');
 
   useEffect(() => {
     const fetchFlashcards = async () => {
@@ -47,20 +48,15 @@ export default function Learn({ set_id }: FlashcardProps) {
 
     setCurrentQuestion(question);
     setOptions(options);
-    setFeedback(null); // Reset feedback for the new question
   };
 
-  const handleClick = (answer: string) => {
-    if (answer === currentQuestion?.answer) {
-      setFeedback('Correct! You clicked the right answer.');
-    } else {
-      setFeedback('Incorrect. Try again!');
-    }
+  const handleOptionClick = (answer: string) => {
+    setMessage(answer === currentQuestion?.answer ? 'Correct!' : 'Incorrect, try again!');
+  };
 
-    // Move to the next question after a short delay
-    setTimeout(() => {
-      generateQuestion(flashcards);
-    }, 1000); 
+  const handleInputSubmit = () => {
+    setMessage(userInput === currentQuestion?.answer ? 'Correct!' : 'Incorrect, try again!');
+    setUserInput('');
   };
 
   if (loading) {
@@ -75,12 +71,25 @@ export default function Learn({ set_id }: FlashcardProps) {
     <div>
       <h1>Learn</h1>
       <p>{currentQuestion.question}</p>
-      {options.map((option, index) => (
-        <Button key={index} onClick={() => handleClick(option)}>
-          {option}
-        </Button>
-      ))}
-      {feedback && <p>{feedback}</p>}
+      <div>
+        <h2>Multiple Choice</h2>
+        {options.map((option, index) => (
+          <Button key={index} onClick={() => handleOptionClick(option)}>
+            {option}
+          </Button>
+        ))}
+      </div>
+      <div>
+        <h2>Type Your Answer</h2>
+        <input
+          type="text"
+          value={userInput}
+          onChange={(e) => setUserInput(e.target.value)}
+          placeholder="Type your answer"
+        />
+        <Button onClick={handleInputSubmit}>Submit</Button>
+      </div>
+      <p>{message}</p>
     </div>
   );
 }
