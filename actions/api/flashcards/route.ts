@@ -1,12 +1,12 @@
 'use server';
-import {createClient} from "@/utils/supabase/server";
+import { createClient } from "@/utils/supabase/server";
 
 const supabase = createClient();
 
 export const getAllFlashcards = async (set_id: number) => {
   const { data, error } = await supabase
     .from('flashcards')
-    .select('id, set_id, question, answer')
+    .select('id, set_id, question, answer, level')
     .eq('set_id', set_id);
   if (error) {
     console.error("Error fetching flashcards:", error);
@@ -15,24 +15,35 @@ export const getAllFlashcards = async (set_id: number) => {
 };
 
 export const getFlashcard = async (id: number, set_id: number) => {
-    let { data: flashcard } = await supabase
-      .from('flashcards')
-      .select('question, answer')
-      .eq('set_id', set_id,)
-      .eq('id', id)
-      .single();
-    return flashcard;
-  }
+  let { data: flashcard } = await supabase
+    .from('flashcards')
+    .select('question, answer')
+    .eq('set_id', set_id)
+    .eq('id', id)
+    .single();
+  return flashcard;
+};
 
 export const createFlashcard = async (question: string, answer: string, set_id: number) => {
-    const { data, error } = await supabase
-        .from('flashcards')
-        .insert({ question: question, answer: answer, set_id: set_id })
-        .select();
+  const { data, error } = await supabase
+    .from('flashcards')
+    .insert({ question: question, answer: answer, set_id: set_id })
+    .select();
 
-    if (error) {
-        console.log(error);
-    }
+  if (error) {
+    console.log(error);
+  }
 
-    return data;
+  return data;
+};
+
+export const updateFlashcardLevel = async (id: number, newLevel: number) => {
+  const { data, error } = await supabase
+    .from('flashcards')
+    .update({ level: newLevel })
+    .eq('id', id);
+  if (error) {
+    console.error("Error updating flashcard level:", error);
+  }
+  return data;
 };
