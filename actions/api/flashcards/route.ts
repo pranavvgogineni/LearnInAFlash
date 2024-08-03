@@ -47,3 +47,14 @@ export const updateFlashcardLevel = async (id: number, newLevel: number) => {
   }
   return data;
 };
+
+export const resetFlashcardLevels = async (set_id: number) => {
+  const { data, error } = await supabase
+    .from('flashcards')
+    .update({ level: 1 })
+    .eq('set_id', set_id);
+  if (error) {
+    console.error("Error resetting flashcard levels:", error);
+  }
+  return data;
+};
