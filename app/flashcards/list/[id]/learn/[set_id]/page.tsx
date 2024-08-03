@@ -1,4 +1,13 @@
 import Learn from "@/components/page/learn";
-export default function LearnPage() {
-    return <Learn set_id={1} />;
+
+interface LearnPageProps {
+  params: {
+    id: number;
+  };
+}
+
+export default function LearnPage({ params }: LearnPageProps) {
+  const { id } = params;
+
+  return <Learn set_id={Number(id)} />;
 }
