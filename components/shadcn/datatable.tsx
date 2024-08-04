@@ -215,15 +215,15 @@ export default function DataTableDemo({ set_id }: { set_id: number }) {
           </TableBody>
         </Table>
       </div>
-      <div className="flex justify-end space-x-4 mt-4">
+      <div className="flex justify-end items-center space-x-4 mt-4">
         <Link href={`${set_id}/practice-set/${set_id}`}>
-          <Button className="bg-orange-600 text-white hover:bg-orange-700">Flashcards</Button>
+          <Button className="bg-orange-600 text-white hover:bg-orange-700">Flashcard</Button>
         </Link>
         <Link href={`${set_id}/learn/${set_id}`}>
           <Button className="bg-orange-600 text-white hover:bg-orange-700">Learn</Button>
         </Link>
+        <DialogDemo set_id={set_id} onFlashcardAdded={handleFlashcardAdded} />
       </div>
-      <DialogDemo set_id={set_id} onFlashcardAdded={handleFlashcardAdded} />
     </div>
   );
 }
