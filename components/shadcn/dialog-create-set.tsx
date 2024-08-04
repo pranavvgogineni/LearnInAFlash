@@ -52,7 +52,7 @@ export function DialogCreateSet({ onCreate }: DialogCreateSetProps) {
           </div>
         </div>
         <DialogFooter>
-          <Button type="button" onClick={handleSubmit}>Save changes</Button>
+          <Button type="button" onClick={handleSubmit}>Create new set</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
