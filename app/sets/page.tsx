@@ -4,7 +4,7 @@ import { getAllSets, createSet } from '@/actions/api/sets/route';
 import { CardHoverEffectDemo } from '@/components/page/set-card';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { DialogCreateSet } from '@/components/shadcn/dialog-create-set'; // Ensure the correct import path
+import { DialogCreateSet } from '@/components/shadcn/dialog-set'; // Ensure the correct import path
 
 export default function SetPage() {
   const [sets, setSets] = useState<{ set_name: string, id: number }[]>([]);
