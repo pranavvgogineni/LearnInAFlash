@@ -96,18 +96,19 @@ export default function DataTableDemo({ set_id }: { set_id: number }) {
       header: ({ column }) => (
         <Button
           variant="ghost"
+          className="text-orange-600"
           onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
         >
           Question
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       ),
-      cell: ({ row }) => <div>{row.getValue('question')}</div>,
+      cell: ({ row }) => <div className="text-orange-800">{row.getValue('question')}</div>,
     },
     {
       accessorKey: 'answer',
-      header: () => <div className="text-right">Answer</div>,
-      cell: ({ row }) => <div className="text-right font-medium">{row.getValue('answer')}</div>,
+      header: () => <div className="text-right text-orange-600">Answer</div>,
+      cell: ({ row }) => <div className="text-right font-medium text-orange-800">{row.getValue('answer')}</div>,
     },
     {
       accessorKey: 'actions',
@@ -143,19 +144,19 @@ export default function DataTableDemo({ set_id }: { set_id: number }) {
   });
 
   return (
-    <div className="w-full">
-      <div className="flex items-center py-4">
+    <div className="w-full max-w-7xl mx-auto px-8">
+      <div className="flex items-center py-4 justify-between">
         <Input
           placeholder="Filter questions..."
           value={(table.getColumn('question')?.getFilterValue() as string) ?? ''}
           onChange={(event) =>
             table.getColumn('question')?.setFilterValue(event.target.value)
           }
-          className="max-w-sm"
+          className="max-w-sm border-orange-600 focus:border-orange-800"
         />
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="ml-auto">
+            <Button variant="outline" className="text-orange-600 border-orange-600 hover:bg-orange-100">
               Columns <ChevronDown className="ml-2 h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
@@ -178,14 +179,14 @@ export default function DataTableDemo({ set_id }: { set_id: number }) {
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <div className="rounded-md border">
+      <div className="rounded-md border border-orange-600">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead key={header.id}>
+                    <TableHead key={header.id} className="bg-orange-600 text-white">
                       {header.isPlaceholder
                         ? null
                         : flexRender(header.column.columnDef.header, header.getContext())}
@@ -200,7 +201,7 @@ export default function DataTableDemo({ set_id }: { set_id: number }) {
               table.getRowModel().rows.map((row) => (
                 <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
+                    <TableCell key={cell.id} className="border-t border-orange-200">{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
                   ))}
                 </TableRow>
               ))
@@ -214,12 +215,14 @@ export default function DataTableDemo({ set_id }: { set_id: number }) {
           </TableBody>
         </Table>
       </div>
-      <Link href={`${set_id}/practice-set/${set_id}`}>
-        <Button>FLASHCARD</Button>
-      </Link>
-      <Link href={`${set_id}/learn/${set_id}`}>
-            <Button>Learn</Button>
-      </Link>
+      <div className="flex justify-end space-x-4 mt-4">
+        <Link href={`${set_id}/practice-set/${set_id}`}>
+          <Button className="bg-orange-600 text-white hover:bg-orange-700">Flashcards</Button>
+        </Link>
+        <Link href={`${set_id}/learn/${set_id}`}>
+          <Button className="bg-orange-600 text-white hover:bg-orange-700">Learn</Button>
+        </Link>
+      </div>
       <DialogDemo set_id={set_id} onFlashcardAdded={handleFlashcardAdded} />
     </div>
   );
