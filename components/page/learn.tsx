@@ -1,7 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
-import { getAllFlashcards, updateFlashcardLevel, resetFlashcardLevels } from '@/actions/api/flashcards/route';
+import { getAllFlashcards, updateFlashcardLevel } from '@/actions/api/flashcards/route';
 
 interface Flashcard {
   id: number;
@@ -26,9 +26,15 @@ export default function Learn({ set_id }: FlashcardProps) {
 
   useEffect(() => {
     const fetchFlashcards = async () => {
-      const result = await getAllFlashcards(set_id);
-      setFlashcards(result || []);
-      setLoading(false);
+      try {
+        const result = await getAllFlashcards(set_id);
+        console.log(`Fetched flashcards for set_id ${set_id}:`, result);
+        setFlashcards(result || []);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching flashcards:', error);
+        setLoading(false);
+      }
     };
 
     fetchFlashcards();
@@ -113,24 +119,12 @@ export default function Learn({ set_id }: FlashcardProps) {
     }
   };
 
-  const handleResetLevels = async () => {
-    await resetFlashcardLevels(set_id);
-    const updatedFlashcards = flashcards.map(flashcard => ({ ...flashcard, level: 1 }));
-    setFlashcards(updatedFlashcards);
-    setShouldGenerate(true);
-  };
-
   if (loading) {
     return <div>Loading...</div>;
   }
 
   if (!currentQuestion) {
-    return( 
-        <>
-        <div>No flashcards found or all flashcards are at level 3.</div>
-        <Button onClick={handleResetLevels}>Reset Levels</Button>
-        </>
-    );
+    return <div>No flashcards found or all flashcards are at level 3.</div>;
   }
 
   return (
@@ -160,7 +154,6 @@ export default function Learn({ set_id }: FlashcardProps) {
         </div>
       )}
       <p>{message}</p>
-      <Button onClick={handleResetLevels}>Reset Levels</Button>
     </div>
   );
 }

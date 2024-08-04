@@ -217,6 +217,9 @@ export default function DataTableDemo({ set_id }: { set_id: number }) {
       <Link href={`${set_id}/practice-set/${set_id}`}>
         <Button>FLASHCARD</Button>
       </Link>
+      <Link href={`${set_id}/learn/${set_id}`}>
+            <Button>Learn</Button>
+      </Link>
       <DialogDemo set_id={set_id} onFlashcardAdded={handleFlashcardAdded} />
     </div>
   );
