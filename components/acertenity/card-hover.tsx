@@ -2,7 +2,6 @@ import { cn } from "@/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import Link from 'next/link';
-import { Button } from "../ui/button";
 
 export const HoverEffect = ({
   set_name,
@@ -10,7 +9,7 @@ export const HoverEffect = ({
 }: {
   set_name: {
     set_name: string;
-    id: number; // Ensure set_id is included as a number
+    id: number;
   }[];
   className?: string;
 }) => {
@@ -19,21 +18,22 @@ export const HoverEffect = ({
   return (
     <div
       className={cn(
-        "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 py-10",
+        "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 py-10", // Updated grid to have 4 columns
         className
       )}
     >
       {set_name.map((item, idx) => (
-        <div
+        <Link
           key={idx}
-          className="relative group block p-2 h-full w-full"
+          href={`/flashcards/list/${item.id}`}
+          className="relative group block p-6 h-full w-full no-underline" // Adjusted padding to p-6
           onMouseEnter={() => setHoveredIndex(idx)}
           onMouseLeave={() => setHoveredIndex(null)}
         >
           <AnimatePresence>
             {hoveredIndex === idx && (
               <motion.span
-                className="absolute inset-0 h-full w-full bg-neutral-200 dark:bg-slate-800/[0.8] block rounded-3xl"
+                className="absolute inset-0 h-full w-full bg-orange-100 block rounded-3xl"
                 layoutId="hoverBackground"
                 initial={{ opacity: 0 }}
                 animate={{
@@ -49,11 +49,8 @@ export const HoverEffect = ({
           </AnimatePresence>
           <Card>
             <CardTitle>{item.set_name}</CardTitle>
-            <Link href={`/flashcards/list/${item.id}`}>
-              <CardButton>View Set</CardButton>
-            </Link>
           </Card>
-        </div>
+        </Link>
       ))}
     </div>
   );
@@ -69,12 +66,12 @@ export const Card = ({
   return (
     <div
       className={cn(
-        "rounded-2xl h-full w-full p-4 overflow-hidden bg-black border border-transparent dark:border-white/[0.2] group-hover:border-slate-700 relative z-20",
+        "rounded-2xl h-full w-full p-6 overflow-hidden bg-orange-600 border border-transparent group-hover:border-orange-700 relative z-20",
         className
       )}
     >
       <div className="relative z-50">
-        <div className="p-4">{children}</div>
+        <div className="p-6">{children}</div> 
       </div>
     </div>
   );
@@ -88,30 +85,8 @@ export const CardTitle = ({
   children: React.ReactNode;
 }) => {
   return (
-    <h4 className={cn("text-zinc-100 font-bold tracking-wide mt-4", className)}>
+    <h4 className={cn("text-white font-bold tracking-wide mt-4", className)}>
       {children}
     </h4>
-  );
-};
-
-export const CardButton = ({
-  className,
-  children,
-  onClick,
-}: {
-  className?: string;
-  children: React.ReactNode;
-  onClick?: () => void;
-}) => {
-  return (
-    <button
-      className={cn(
-        "mt-4 bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded",
-        className
-      )}
-      onClick={onClick}
-    >
-      {children}
-    </button>
   );
 };

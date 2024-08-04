@@ -35,13 +35,17 @@ export default function SetPage() {
   }
 
   return (
-    <div>
-      <h1>Sets</h1>
+    <div className="max-w-7xl mx-auto px-8">
+      <div className="flex justify-between items-center py-4">
+        <h1 className="text-2xl font-bold text-orange-600">Sets</h1>
+        <div className="flex space-x-4">
+          <DialogCreateSet onCreate={handleCreateSet} />
+          {/* <Link href="/list">
+            <Button variant="outline" className="bg-orange-600 text-white hover:bg-orange-700">Home</Button>
+          </Link> */}
+        </div>
+      </div>
       <CardHoverEffectDemo set_name={sets} />
-      <DialogCreateSet onCreate={handleCreateSet} />
-      <Link href="list">
-        <Button>BACK TO SET</Button>
-      </Link>
     </div>
   );
 }

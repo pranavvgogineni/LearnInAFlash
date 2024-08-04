@@ -29,7 +29,7 @@ export function DialogCreateSet({ onCreate }: DialogCreateSetProps) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline">Create New Set</Button>
+        <Button variant="outline" className="mb-4">Create New Set</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
@@ -52,7 +52,7 @@ export function DialogCreateSet({ onCreate }: DialogCreateSetProps) {
           </div>
         </div>
         <DialogFooter>
-          <Button type="button" onClick={handleSubmit}>Create new set</Button>
+          <Button type="button" onClick={handleSubmit} className="bg-orange-600 text-white hover:bg-orange-700">Create</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
