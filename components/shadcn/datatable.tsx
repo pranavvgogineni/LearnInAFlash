@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import { useState, useEffect } from 'react';
-import { getAllFlashcards } from '@/actions/api/flashcards/route';
+import { getAllFlashcards, updateFlashcard, deleteFlashcard } from '@/actions/api/flashcards/route';
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -36,33 +36,14 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { DialogDemo } from '@/components/shadcn/dialog';
+import { DialogDemo } from '@/components/shadcn/dialog-create';
+import { DialogUpdate } from '@/components/shadcn/dialog-update';
 
 export type Flashcard = {
+  id: number;
   question: string;
   answer: string;
 };
-
-export const columns: ColumnDef<Flashcard>[] = [
-  {
-    accessorKey: 'question',
-    header: ({ column }) => (
-      <Button
-        variant="ghost"
-        onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-      >
-        Question
-        <ArrowUpDown className="ml-2 h-4 w-4" />
-      </Button>
-    ),
-    cell: ({ row }) => <div>{row.getValue('question')}</div>,
-  },
-  {
-    accessorKey: 'answer',
-    header: () => <div className="text-right">Answer</div>,
-    cell: ({ row }) => <div className="text-right font-medium">{row.getValue('answer')}</div>,
-  },
-];
 
 export default function DataTableDemo({ set_id }: { set_id: number }) {
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -71,6 +52,24 @@ export default function DataTableDemo({ set_id }: { set_id: number }) {
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
   const [refetchTrigger, setRefetchTrigger] = useState(false); // State to trigger refetch
+
+  const handleUpdate = async (id: number, question: string, answer: string) => {
+    try {
+      await updateFlashcard(id, question, answer);
+      setRefetchTrigger(prev => !prev); // Trigger a refetch of the data
+    } catch (error) {
+      console.error('Error updating flashcard:', error);
+    }
+  };
+
+  const handleDelete = async (id: number) => {
+    try {
+      await deleteFlashcard(id);
+      setRefetchTrigger(prev => !prev); // Trigger a refetch of the data
+    } catch (error) {
+      console.error('Error deleting flashcard:', error);
+    }
+  };
 
   useEffect(() => {
     const fetchFlashcards = async () => {
@@ -90,6 +89,39 @@ export default function DataTableDemo({ set_id }: { set_id: number }) {
   const handleFlashcardAdded = () => {
     setRefetchTrigger(!refetchTrigger); // Toggle the refetch trigger
   };
+
+  const columns: ColumnDef<Flashcard>[] = [
+    {
+      accessorKey: 'question',
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        >
+          Question
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      ),
+      cell: ({ row }) => <div>{row.getValue('question')}</div>,
+    },
+    {
+      accessorKey: 'answer',
+      header: () => <div className="text-right">Answer</div>,
+      cell: ({ row }) => <div className="text-right font-medium">{row.getValue('answer')}</div>,
+    },
+    {
+      accessorKey: 'actions',
+      header: 'Actions',
+      cell: ({ row }) => (
+        <div className="flex justify-end space-x-2">
+          <DialogUpdate flashcard={row.original} onUpdate={handleUpdate} />
+          <Button variant="destructive" size="sm" onClick={() => handleDelete(row.original.id)}>
+            Delete
+          </Button>
+        </div>
+      ),
+    },
+  ];
 
   const table = useReactTable({
     data: flashcards,

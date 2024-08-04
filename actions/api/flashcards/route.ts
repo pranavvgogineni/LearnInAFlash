@@ -37,6 +37,23 @@ export const createFlashcard = async (question: string, answer: string, set_id: 
   return data;
 };
 
+export const updateFlashcard = async (id: number, question: string, answer: string) => {
+  const { data, error } = await supabase
+    .from('flashcards')
+    .update({ question: question, answer: answer })
+    .eq('id', id)
+    .single();
+
+    return data;
+};
+export const deleteFlashcard = async (id: number) => {
+  const { data, error } = await supabase
+    .from('flashcards')
+    .delete()
+    .eq('id', id);
+
+  return data;
+}
 export const updateFlashcardLevel = async (id: number, newLevel: number) => {
   const { data, error } = await supabase
     .from('flashcards')
