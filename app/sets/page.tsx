@@ -27,6 +27,7 @@ export default function SetPage() {
     <div>
       <h1>Sets</h1>
       <CardHoverEffectDemo set_name={sets} />
+      <Button onClick={() => console.log("what")}>Create new set</Button>
       <Link href="list">
         <Button>BACK TO SET</Button>
       </Link>

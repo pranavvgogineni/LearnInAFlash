@@ -11,3 +11,16 @@ export const getAllSets = async () => {
   }
   return sets;
 };
+
+export const createSet = async (set_name: string) => {
+  const { data, error } = await supabase
+    .from('sets')
+    .insert({ set_name: set_name })
+    .select();
+
+  if (error) {
+    console.log(error);
+  }
+
+  return data;
+}
