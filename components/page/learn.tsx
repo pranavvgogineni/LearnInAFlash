@@ -120,40 +120,47 @@ export default function Learn({ set_id }: FlashcardProps) {
   };
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div className="flex justify-center items-center h-screen text-orange-600">Loading...</div>;
   }
 
   if (!currentQuestion) {
-    return <div>No flashcards found or all flashcards are at level 3.</div>;
+    return <div className="flex justify-center items-center h-screen text-orange-600">No flashcards found or all flashcards are at level 3.</div>;
   }
 
   return (
-    <div>
-      <h1>Learn</h1>
-      <p>{currentQuestion.question}</p>
+    <div className="w-full h-full max-w-screen-xl max-h-screen mx-auto p-16 mt-8">
+      <h1 className="text-4xl font-bold text-center text-orange-600 mb-8">Learn</h1>
+      <p className="text-2xl text-center mb-6">{currentQuestion.question}</p>
       {currentQuestion.level === 1 && (
-        <div>
-          <h2>Multiple Choice</h2>
+        <div className="flex flex-col items-center space-y-6">
+          <h2 className="text-2xl font-semibold mb-6">Multiple Choice</h2>
           {options.map((option, index) => (
-            <Button key={index} onClick={() => handleOptionClick(option)}>
+            <Button
+              key={index}
+              className="w-3/4 bg-orange-500 hover:bg-orange-600 text-white font-bold py-4 px-6 rounded"
+              onClick={() => handleOptionClick(option)}
+            >
               {option}
             </Button>
           ))}
         </div>
       )}
       {currentQuestion.level === 2 && (
-        <div>
-          <h2>Type Your Answer</h2>
+        <div className="flex flex-col items-center space-y-6">
+          <h2 className="text-2xl font-semibold mb-6">Type Your Answer</h2>
           <input
             type="text"
             value={userInput}
             onChange={(e) => setUserInput(e.target.value)}
             placeholder="Type your answer"
+            className="w-3/4 bg-orange-500 hover:bg-orange-600 text-white font-bold py-4 px-6 rounded placeholder-white placeholder-opacity-75"
           />
-          <Button onClick={handleInputSubmit}>Submit</Button>
+          <Button className="w-3/4 bg-orange-500 hover:bg-orange-600 text-white font-bold py-4 px-6 rounded" onClick={handleInputSubmit}>
+            Submit
+          </Button>
         </div>
       )}
-      <p>{message}</p>
+      <p className="text-center mt-6 text-2xl">{message}</p>
     </div>
   );
 }
